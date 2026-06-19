@@ -1,4 +1,4 @@
-# AI Service Desk Ticket Classifier
+# Service Desk Ticket Classifier
 
 <p align="center">
   <img src="screenshots/img1.png" width="900">
