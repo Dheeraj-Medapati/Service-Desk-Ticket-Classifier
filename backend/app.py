@@ -11,10 +11,9 @@ CORS(app)
 # ----------------------------
 # Load Model and Tokenizer
 # ----------------------------
-model_path = "distilbert_model"
-
-model = DistilBertForSequenceClassification.from_pretrained(model_path)
-tokenizer = DistilBertTokenizerFast.from_pretrained(model_path)
+model_name = "Dheeraj130905/service-desk-ticket-classifier"
+model = DistilBertForSequenceClassification.from_pretrained(model_name)
+tokenizer = DistilBertTokenizerFast.from_pretrained(model_name)
 
 # ----------------------------
 # Load Label Encoder
