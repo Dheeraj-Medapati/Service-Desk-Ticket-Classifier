@@ -10,17 +10,40 @@ async function predictDepartment() {
     resultDiv.innerHTML = "Predicting...";
 
     try {
-        const response = await fetch("http://127.0.0.1:5000/predict", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ text: text })
-        });
+        const response = await fetch(
+            "https://dheeraj130905-service-desk-ticket-classifier-app.hf.space/call/predict",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    data: [text]
+                })
+            }
+        );
 
-        const data = await response.json();
+        const eventId = await response.text();
 
-        resultDiv.innerHTML = "Your issue is forwarded to  " + data.department +" Department They will reach u soon";
+        const resultResponse = await fetch(
+            `https://dheeraj130905-service-desk-ticket-classifier-app.hf.space/call/predict/${eventId}`
+        );
+
+        const resultText = await resultResponse.text();
+
+        const match = resultText.match(/data:\s*(.*)/);
+
+        if (match) {
+            const parsed = JSON.parse(match[1]);
+            const department = parsed[0];
+
+            resultDiv.innerHTML =
+                "Your issue is forwarded to " +
+                department +
+                " Department. They will reach you soon.";
+        } else {
+            resultDiv.innerHTML = "Prediction failed.";
+        }
 
     } catch (error) {
         resultDiv.innerHTML = "Error connecting to backend.";
